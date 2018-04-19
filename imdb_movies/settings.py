@@ -14,6 +14,8 @@ BOT_NAME = 'imdb_movies'
 SPIDER_MODULES = ['imdb_movies.spiders']
 NEWSPIDER_MODULE = 'imdb_movies.spiders'
 
+# Do not filter duplicate requests, make it log all requests
+# DUPERFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'imdb_movies (+http://www.yourdomain.com)'

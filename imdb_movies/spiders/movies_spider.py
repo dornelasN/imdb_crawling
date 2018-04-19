@@ -10,12 +10,13 @@ class MoviesSpider(scrapy.Spider):
 
   def parse(self, response):
     i = 1
+    pages = 1
     genre_links = response.xpath('//div[@class="widget_image"]/div[@class="image"]/a/@href').extract()
     # for each genre in the genre page, call parse_genres to order by rating and then parse each movie
     for genre in genre_links:
       if(i <= len(genre_links)):
         i = i + 1
-        yield response.follow(genre, self.parse_pages)
+        yield response.follow(genre, self.parse_pages, meta={'pages': pages})
 
 # follow website link to order movies by user_rating
 #  def parse_rating(self, response):
@@ -26,9 +27,16 @@ class MoviesSpider(scrapy.Spider):
   def parse_pages(self, response):
     movies_links = response.xpath('//div[@class="lister-item-content"]/h3[@class="lister-item-header"]/a/@href').extract()
     movie_genre = response.xpath('//h1[@class="header"]/text()').extract_first().split()[2]
+    next_page = response.xpath('//a[@class="lister-page-next next-page"]/@href').extract_first()
+    pages = response.meta['pages']
 
     for movie in movies_links:
       yield response.follow(movie, self.parse_movies, meta={'movie_genre': movie_genre} )
+
+    if next_page is not None:
+      if(pages < 10):
+        pages = pages + 1
+        yield response.follow(next_page, self.parse_pages, meta={'pages': pages})
 
   # parse movie data from movie page
   def parse_movies(self, response):
