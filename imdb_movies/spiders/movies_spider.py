@@ -31,7 +31,7 @@ class MoviesSpider(scrapy.Spider):
     pages = response.meta['pages']
 
     for movie in movies_links:
-      yield response.follow(movie, self.parse_movies, meta={'movie_genre': movie_genre} )
+      yield response.follow(movie, self.parse_movies, meta={'movie_genre': movie_genre})
 
     if next_page is not None:
       if(pages < 10):

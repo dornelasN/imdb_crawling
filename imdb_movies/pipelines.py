@@ -16,6 +16,7 @@ class PerRatingJsonLinesExportPipeline(object):
             exporter.finish_exporting()
             exporter.file.close()
 
+    #TODO: re order the movies by Rating
     def _exporter_for_item(self, item):
         genre = item['genre']
         if genre not in self.genre_to_exporter:
