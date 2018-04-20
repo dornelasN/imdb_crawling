@@ -19,7 +19,7 @@ class PerRatingJsonLinesExportPipeline(object):
             exporter.file.close()
 
         for genre_file in self.files_to_order:
-            self.reorder_file(genre_file)
+            self.reorder_file_by_rating(genre_file)
 
     def _exporter_for_item(self, item):
         genre = item['genre']
@@ -36,7 +36,8 @@ class PerRatingJsonLinesExportPipeline(object):
         exporter.export_item(item)
         return item
 
-    def reorder_file(self, filename):
+    # Re-order JSON files by 'rating' value
+    def reorder_file_by_rating(self, filename):
         list_to_order = list()
         # Extract rating from json Object, return 0 if TypeError is raised (rating == null)
         def extract_rating(json):
